@@ -59,10 +59,11 @@ public class StudentService {
     
     //Service for Student Fee payment
     
-    public Mono<ResponseEntity<String>> payFeeService(Payment payment){
+    public Mono<ResponseEntity<String>> payFeeService(Payment payment,String authorization){
     	
     	return webClient.post().uri("/feePayment")
     			.contentType(MediaType.APPLICATION_JSON)
+    			.header("Authorization", authorization)
     			.bodyValue(payment)
     			.retrieve()
     			.toEntity(String.class);
@@ -70,9 +71,10 @@ public class StudentService {
     
     //Fetching the Total Fee Paid by Student
     
-    public ResponseEntity<Mono<String>> feeDetailsService(Integer studentId){
+    public ResponseEntity<Mono<String>> feeDetailsService(Integer studentId,String authorization){
     	return ResponseEntity.ok(webClient.get()
     			.uri("/paymentDetails/{studentId}",studentId)
+    			.header("Authorization", authorization)
     			.retrieve()
     			.bodyToMono(String.class));
     }

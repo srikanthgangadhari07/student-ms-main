@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,14 +66,14 @@ public class StudentController {
     }
 
     @PostMapping("/student/payfees")
-    public Mono<ResponseEntity<String>> payFees(@RequestBody Payment payment){
-    	Mono<ResponseEntity<String>> resp=studentService.payFeeService(payment);
+    public Mono<ResponseEntity<String>> payFees(@RequestHeader("Authorization") String authorization,@RequestBody Payment payment){
+    	Mono<ResponseEntity<String>> resp=studentService.payFeeService(payment,authorization);
     	return resp;
     }
 
     @GetMapping("/student/feeDetails/{studentId}")
-    public ResponseEntity<Mono<String>> feeDetails(@PathVariable("studentId") Integer studentId){
-    	ResponseEntity<Mono<String>> resp=studentService.feeDetailsService(studentId);
+    public ResponseEntity<Mono<String>> feeDetails(@RequestHeader("Authorization") String authorization,@PathVariable("studentId") Integer studentId){
+    	ResponseEntity<Mono<String>> resp=studentService.feeDetailsService(studentId,authorization);
     	return resp;
     }
 
